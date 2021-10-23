@@ -6,7 +6,7 @@ async function createUser({ username, password }) {
 
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
   try {
-    const { rows } = await client.query(
+    const { rows: [user] } = await client.query(
       `
           INSERT INTO users (username, password)
           VALUES ($1, $2)
@@ -14,24 +14,51 @@ async function createUser({ username, password }) {
             `,
       [username, hashedPassword]
     );
-    return rows[0];
+    delete user.password;
+    return user;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
-async function getUser({ username, password }) {
-  const user = await getUserByUserName(username);
-  const hashedPassword = user.password;
-
-  const passwordsMatch = bcrypt.compare(password, hashedPassword);
-  if (passwordsMatch) {
-    delete user.password;
+async function getUserById(id) {
+  try {
+    const { rows: [user] } = await client.query(`
+        SELECT * FROM users WHERE id=${id};
+    `);
     return user;
-  } else {
-    throw SomeError;
+  } catch (err) {
+    throw err;
   }
 }
 
-module.exports = { createUser, getUser };
+async function getUserByUserName(username) {
+  try {
+    const { rows: [user] } = await client.query(`
+        SELECT * FROM users WHERE username=$1;
+    `, [username]);
+    return user;
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function getUser({ username, password }) {
+  try {
+    const user = await getUserByUserName(username);
+    console.log("getUser function please work", user)
+    const hashedPassword = user.password;
+    console.log("hashedPassword from getUser", hashedPassword);
+
+    const passwordsMatch = bcrypt.compare(password, hashedPassword);
+    if (passwordsMatch) {
+      delete user.password;
+      return user;
+    }
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = { createUser, getUser, getUserById };
