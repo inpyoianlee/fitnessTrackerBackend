@@ -57,7 +57,7 @@ describe('Database', () => {
         expect(verifiedUser.password).toBeFalsy();
       })
     })
-    xdescribe('getUserById', () => {
+    describe('getUserById', () => {
       it('Gets a user based on the user Id', async () => {
         const user = await getUserById(userToCreateAndUpdate.id);
         expect(user).toBeTruthy();
