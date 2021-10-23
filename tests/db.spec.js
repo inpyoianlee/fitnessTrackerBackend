@@ -57,7 +57,7 @@ describe('Database', () => {
         expect(verifiedUser.password).toBeFalsy();
       })
     })
-    xdescribe('getUserById', () => {
+    describe('getUserById', () => {
       it('Gets a user based on the user Id', async () => {
         const user = await getUserById(userToCreateAndUpdate.id);
         expect(user).toBeTruthy();
@@ -65,7 +65,7 @@ describe('Database', () => {
       })
     })
   })
-  xdescribe('Activities', () => {
+  describe('Activities', () => {
     describe('getAllActivities', () => {
       it('selects and returns an array of all activities', async () => {
         const activities = await getAllActivities();
