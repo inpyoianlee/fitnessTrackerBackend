@@ -2,6 +2,8 @@
 
 const { Client } = require('pg');
 
-const client = new Client("not connected yet :O");
+const CONNECTION_STRING = process.env.DATABASE_URL || `postgres://postgres@localhost:5432/fitness-dev`
+
+const client = new Client(CONNECTION_STRING);
 
 module.exports = client;
