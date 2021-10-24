@@ -47,14 +47,14 @@ async function getUserByUserName(username) {
 async function getUser({ username, password }) {
   try {
     const user = await getUserByUserName(username);
-    console.log("getUser function please work", user)
     const hashedPassword = user.password;
-    console.log("hashedPassword from getUser", hashedPassword);
-
-    const passwordsMatch = bcrypt.compare(password, hashedPassword);
+    const passwordsMatch = await bcrypt.compare(password, hashedPassword);
     if (passwordsMatch) {
       delete user.password;
       return user;
+    } else {
+      return null;
+      // not sure about this one, if I try to throw an Error, it does not pass the test.
     }
   } catch (err) {
     throw err;
