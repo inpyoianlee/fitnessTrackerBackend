@@ -61,4 +61,4 @@ async function getUser({ username, password }) {
   }
 }
 
-module.exports = { createUser, getUser, getUserById };
+module.exports = { createUser, getUser, getUserById, getUserByUserName };
