@@ -14,7 +14,8 @@ const client = require("./db/client");
 
 server.use((req, res, next) => {
   console.log("404: Page not found");
-  res.status(404).send("Request failed with status code 404");
+  res.status(404)
+  res.send("Request failed with status code 404");
 });
 
 server.use((err, req, res, next) => {
